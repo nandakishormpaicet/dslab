@@ -1,35 +1,28 @@
-module halfadderstr(sum,carry,a,b);
-output sum,carry;
-input a,b;
-xor(sum,a,b);
-and(carry,a,b);
+Verilog Code for Binary to Gray code conversion:
+
+module bin2gray
+        (input [3:0] bin, //binary input
+         output [3:0] G //gray code output
+        );
+
+//xor gates.
+assign G[3] = bin[3];
+assign G[2] = bin[3] ^ bin[2];
+assign G[1] = bin[2] ^ bin[1];
+assign G[0] = bin[1] ^ bin[0];
+
 endmodule
 
-module fulladder(S,Ca,A,B,C);
-input A,B,C;
-output S,Ca;
-wire sum0,carry0,carry1;
-halfadderstr ha1(sum0,carry0,A,B);
-halfadderstr ha2(S,carry1,C,sum0);
-or(Ca,carry1,carry0);
-endmodule
+Verilog Code for Gray code to Binary conversion:
 
-module disp;
-reg a,b,c,d;
-wire S,Ca;
-fulladder fn1(S,Ca,a,b,c);
-initial
-begin
-$display("");
-$display("a b c S Ca");
-$monitor(a," ",b," ",c," ",S," ",Ca);
-a=0;b=0;c=0;
-#10 c=1;
-#10 b=1;c=0;
-#10 c=1;
-#10 a=1;b=0;c=0;
-#10 c=1;
-#10 b=1;c=0;
-#10 c=1;
-end
+module gray2bin
+        (input [3:0] G, //gray code output
+         output [3:0] bin   //binary input
+        );
+
+assign bin[3] = G[3];
+assign bin[2] = G[3] ^ G[2];
+assign bin[1] = G[3] ^ G[2] ^ G[1];
+assign bin[0] = G[3] ^ G[2] ^ G[1] ^ G[0];
+
 endmodule
